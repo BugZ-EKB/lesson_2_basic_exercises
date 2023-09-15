@@ -12,7 +12,16 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
 ]
-# ???
+name_dict = {}
+for student in students:
+    if student['first_name'] not in name_dict:
+        name_dict[student['first_name']] = 1
+    else:
+        name_dict[student['first_name']] += 1
+
+for k, v in name_dict.items():
+    print(f'{k}: {v}')
+print()
 
 
 # Задание 2
@@ -26,8 +35,19 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Оля'},
 ]
-# ???
 
+name_dict = {}
+for student in students:
+    if student['first_name'] not in name_dict:
+        name_dict[student['first_name']] = 1
+    else:
+        name_dict[student['first_name']] += 1
+
+max_val = max(name_dict.values())
+for k, v in name_dict.items():
+    if v == max_val:
+        print(f'Самое частое имя среди учеников: {k}')
+print()
 
 # Задание 3
 # Есть список учеников в нескольких классах, нужно вывести самое частое имя в каждом классе.
@@ -51,8 +71,25 @@ school_students = [
         {'first_name': 'Саша'},
     ],
 ]
-# ???
+def max_number_in_class(class_dict):
+    name_dict = {}
+    for student in class_dict:
+        if student['first_name'] not in name_dict:
+            name_dict[student['first_name']] = 1
+        else:
+            name_dict[student['first_name']] += 1
+    max_val = max(name_dict.values())
+    for k, v in name_dict.items():
+        if v == max_val:
+            return k
 
+
+group_number = 1
+for students in school_students:
+    max_name = max_number_in_class(students)
+    print(f'Самое частое имя в классе {group_number}: {max_name}')
+    group_number += 1
+print()
 
 # Задание 4
 # Для каждого класса нужно вывести количество девочек и мальчиков в нём.
@@ -72,7 +109,26 @@ is_male = {
     'Миша': True,
     'Даша': False,
 }
-# ???
+
+
+def gender_structure(class_dict):
+    gender_dict = {'девочки': 0, 'мальчики': 0}
+    for student in class_dict:
+        if is_male[student['first_name']]:
+            gender_dict['мальчики'] += 1
+        else:
+            gender_dict['девочки'] += 1
+    return gender_dict
+
+
+def total_structure(school_class):
+    for cl in school_class:
+        total = gender_structure(cl['students'])
+        print(f'Класс {cl["class"]}: девочки {total["девочки"]}, мальчики {total["мальчики"]} ')
+
+
+total_structure(school)
+print()
 
 
 # Задание 5
@@ -91,5 +147,29 @@ is_male = {
     'Олег': True,
     'Миша': True,
 }
-# ???
+def gender_structure(class_dict):
+    gender_dict = {'девочки': 0, 'мальчики': 0}
+    for student in class_dict:
+        if is_male[student['first_name']]:
+            gender_dict['мальчики'] += 1
+        else:
+            gender_dict['девочки'] += 1
+    return gender_dict
+
+
+def total_structure(school_class):
+    gender_max = {'male': 0, 'female': 0, 'male_class': '', 'female_class': ''}
+    for cl in school_class:
+        total = gender_structure(cl['students'])
+        if total["девочки"] > gender_max['female']:
+            gender_max['female'] = total["девочки"]
+            gender_max['female_class'] = cl['class']
+        if total["мальчики"] > gender_max['male']:
+            gender_max['male'] = total["мальчики"]
+            gender_max['male_class'] = cl['class']
+    print(f'Больше всего мальчиков в классе {gender_max["male_class"]} ')
+    print(f'Больше всего девочек в классе {gender_max["female_class"]} ')
+
+
+total_structure(school)
 

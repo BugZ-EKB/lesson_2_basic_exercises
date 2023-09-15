@@ -2,8 +2,10 @@
 # Необходимо вывести имена всех учеников из списка с новой строки
 
 names = ['Оля', 'Петя', 'Вася', 'Маша']
-# ???
 
+for name in names:
+    print(name)
+print()
 
 # Задание 2
 # Необходимо вывести имена всех учеников из списка, рядом с именем показать количество букв в нём
@@ -12,8 +14,10 @@ names = ['Оля', 'Петя', 'Вася', 'Маша']
 # Петя: 4
 
 names = ['Оля', 'Петя', 'Вася', 'Маша']
-# ???
 
+for name in names:
+    print(f'{name}: {len(name)}')
+print()
 
 # Задание 3
 # Необходимо вывести имена всех учеников из списка, рядом с именем вывести пол ученика
@@ -25,7 +29,13 @@ is_male = {
     'Маша': False,
 }
 names = ['Оля', 'Петя', 'Вася', 'Маша']
-# ???
+
+for name in names:
+    if is_male[name]:
+        print(f'{name}, Пол: мужской')
+    else:
+        print(f'{name}, Пол: женский')
+print()
 
 
 # Задание 4
@@ -37,10 +47,30 @@ names = ['Оля', 'Петя', 'Вася', 'Маша']
 
 groups = [
     ['Вася', 'Маша'],
-    ['Вася', 'Маша', 'Саша', 'Женя'],
+    ['Вася', 'Маша', 'Саша', 'Женя', 'Коля'],
     ['Оля', 'Петя', 'Гриша'],
 ]
-# ???
+
+def group_info():
+    if len(groups) == 1:
+        return f'Всего 1 группа'
+    if len(groups) < 5:
+        return f'Всего {len(groups)} группы'
+    return f'Всего {len(groups)} групп'
+
+
+print(group_info())
+
+group_number = 1
+for group in groups:
+    if len(group) == 1:
+        print(f'Группа {group_number}: 1 ученик')
+    elif len(group) < 5:
+        print(f'Группа {group_number}: {len(group)} ученика')
+    else:
+        print(f'Группа {group_number}: {len(group)} учеников')
+    group_number += 1
+print()
 
 
 # Задание 5
@@ -54,4 +84,7 @@ groups = [
     ['Оля', 'Петя', 'Гриша'],
     ['Вася', 'Маша', 'Саша', 'Женя'],
 ]
-# ???
+
+for i, group in enumerate(groups, start=1):
+    students = ', '.join(group)
+    print(f'Группа {i}: {students}')

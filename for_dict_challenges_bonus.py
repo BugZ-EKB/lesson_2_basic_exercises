@@ -67,4 +67,98 @@ def generate_chat_history():
 
 
 if __name__ == "__main__":
-    print(generate_chat_history())
+    messages = (generate_chat_history())
+    # print(messages)
+
+
+def most_write_messages():
+    author_messages = {}
+    for message in messages:
+        author_messages[message['sent_by']] = author_messages.get(message['sent_by'], 0) + 1
+    max_messages = max(author_messages.values())
+    for k, v in author_messages.items():
+        if v == max_messages:
+            return k
+
+
+print(f'Больше всего сообщений написал пользователь с номером {most_write_messages()}')
+
+
+def most_reply():
+    author_messages = {}
+    for message in messages:
+        for reply in messages:
+            if message['id'] == reply['reply_for']:
+                author_messages[message['sent_by']] = author_messages.get(message['sent_by'], 0) + 1
+    max_messages = max(author_messages.values())
+    for k, v in author_messages.items():
+        if v == max_messages:
+            return k
+
+
+print(f'Больше всего ответов на сообщения, которые написал пользователь с номером {most_reply()}')
+
+
+def most_seen():
+    author_messages = {}
+    for message in messages:
+        if message['sent_by'] not in author_messages:
+            author_messages[message['sent_by']] = message['seen_by']
+        else:
+            for user_id in message['seen_by']:
+                if user_id not in author_messages[message['sent_by']]:
+                    author_messages[message['sent_by']].append(user_id)
+    max_user = 0
+    for user_list in author_messages.values():
+        if len(user_list) > max_user:
+            max_user = len(user_list)
+    max_list = []
+    for k, v in author_messages.items():
+        if len(v) == max_user:
+            max_list.append(k)
+    if len(max_list) > 1:
+        return max_list
+    return k
+
+
+print(f'Сообщения, которые видели больше всего уникальных пользователей, написал пользователь с номером {most_seen()}')
+
+
+def time_max():
+    message_time = {'Утром': 0, 'Днём': 0, 'Вечером': 0}
+    for message in messages:
+        if message['sent_at'].hour < 12:
+            message_time['Утром'] += 1
+        elif 12 < message['sent_at'].hour < 18:
+            message_time['Днём'] += 1
+        else:
+            message_time['Вечером'] += 1
+    max_time = max(message_time.values())
+    for k, v in message_time.items():
+        if v == max_time:
+            return k
+
+
+print(f'Больше всего сообщений было {time_max()}')
+
+
+def find_longest_threads():
+    thread_lengths = {}
+
+    for message in messages:
+        thread_length = 0
+        current_message = message
+        while current_message is not None:
+            thread_length += 1
+            current_message = next((m for m in messages if m['id'] == current_message['reply_for']), None)
+        thread_lengths[message['id']] = thread_length
+
+    max_length = max(thread_lengths.values())
+    longest_threads = []
+    for k,v in thread_lengths.items():
+        if v == max_length:
+            longest_threads.append(k)
+    return longest_threads
+
+
+print(f'Самая длинная цепочка ответов у сообщений с id: {find_longest_threads()}')
